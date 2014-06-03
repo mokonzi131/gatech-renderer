@@ -3,7 +3,6 @@ package com.fsfive.renderer.render;
 import com.fsfive.renderer.engine.Engine;
 import com.fsfive.renderer.engine.Game;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -21,7 +20,7 @@ public class Renderer extends Game {
 
     @Override
     public void run() {
-        m_engine.setScene(new ObjectScene());
+        m_engine.setScene(new RenderScene());
         m_engine.start();
 
         System.exit(0);

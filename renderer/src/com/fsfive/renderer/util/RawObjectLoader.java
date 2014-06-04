@@ -1,15 +1,10 @@
 package com.fsfive.renderer.util;
 
-import com.fsfive.renderer.render.RenderObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -58,31 +53,12 @@ public class RawObjectLoader {
 
         List<String> lines = new ArrayList<>();
 
-        // find resource location
-        URL resource = RawObjectLoader.class.getResource(filename);
-        if (resource == null) {
-            LOGGER.log(Level.WARNING, "Failed to find resource " + filename);
-            return null;
-        }
-
-
-        // get the resource path
+        // get a path to the file
         Path path = null;
         try {
-            path = Paths.get(resource.toURI());
-        } catch (URISyntaxException e) {
-            LOGGER.log(Level.WARNING, "Failed to access resource location", e);
-            return null;
-        }
-
-        // check the file
-        if (!Files.exists(path)) {
-            LOGGER.log(Level.WARNING, "File doesn't exist");
-            return null;
-        }
-
-        if (!Files.isReadable(path)) {
-            LOGGER.log(Level.WARNING, "File is not accessible for reading");
+            path = ResourceLoader.accessFile(filename);
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Failed to Access File", e);
             return null;
         }
 

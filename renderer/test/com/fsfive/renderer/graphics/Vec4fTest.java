@@ -1,4 +1,4 @@
-package com.fsfive.renderer.math;
+package com.fsfive.renderer.graphics;
 
 import org.junit.Test;
 

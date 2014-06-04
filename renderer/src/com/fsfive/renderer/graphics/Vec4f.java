@@ -1,4 +1,4 @@
-package com.fsfive.renderer.math;
+package com.fsfive.renderer.graphics;
 
 /**
  * Created by Michael on 6/3/2014.

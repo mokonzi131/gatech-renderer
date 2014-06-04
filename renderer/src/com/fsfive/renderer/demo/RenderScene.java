@@ -1,10 +1,9 @@
-package com.fsfive.renderer.render;
+package com.fsfive.renderer.demo;
 
 import com.fsfive.renderer.engine.Display;
 import com.fsfive.renderer.engine.Scene;
 import com.fsfive.renderer.graphics.Mesh;
 import com.fsfive.renderer.graphics.Pipeline;
-import com.fsfive.renderer.graphics.Vec4f;
 import com.fsfive.renderer.util.RawObjectLoader;
 
 import java.awt.*;
@@ -49,6 +48,11 @@ public class RenderScene implements Scene, WindowListener {
                 Settings.objectPosition[0],
                 Settings.objectPosition[1],
                 Settings.objectPosition[2]);
+        m_renderObject.setRotation(
+                Settings.objectOrientation[0],
+                Settings.objectOrientation[1],
+                Settings.objectOrientation[2]
+        );
         m_renderObject.setSize(5f, 5f, 5f);
     }
 

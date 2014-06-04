@@ -1,4 +1,4 @@
-package com.fsfive.renderer.render;
+package com.fsfive.renderer.demo;
 
 /**
  * Created by Michael on 6/3/2014.
@@ -9,7 +9,7 @@ public class Settings {
     // OBJECT LOCATION / ORIENTATION
     // objectPosition : vec3f world coordinates
     // objectOrientation : vec3i degrees
-    public static float[] objectPosition = { 1f, 2f, 3f };
+    public static float[] objectPosition = { 300f, 200f, 0f };
     public static int[] objectOrientation = {90, 180, 270 };
 
     // CAMERA LOCATION / ORIENTATION

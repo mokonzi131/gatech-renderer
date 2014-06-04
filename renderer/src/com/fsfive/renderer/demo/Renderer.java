@@ -1,4 +1,4 @@
-package com.fsfive.renderer.render;
+package com.fsfive.renderer.demo;
 
 import com.fsfive.renderer.engine.Engine;
 import com.fsfive.renderer.engine.Game;

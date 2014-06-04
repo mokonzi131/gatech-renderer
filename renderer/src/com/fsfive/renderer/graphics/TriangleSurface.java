@@ -1,6 +1,5 @@
 package com.fsfive.renderer.graphics;
 
-import com.fsfive.renderer.graphics.Vec4f;
 import org.jblas.FloatMatrix;
 
 import java.awt.*;
@@ -55,7 +54,7 @@ public class TriangleSurface {
 
         m_py[0] = (int)v0.get(1);
         m_py[1] = (int)v1.get(1);
-        m_py[2] = (int)v2.get(2);
+        m_py[2] = (int)v2.get(1);
 
         graphics.setColor(Color.RED);
         graphics.drawPolygon(m_px, m_py, 3);

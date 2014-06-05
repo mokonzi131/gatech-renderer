@@ -19,7 +19,11 @@ public class Pipeline {
 
     private List<FloatMatrix> base;
     private List<FloatMatrix> lighting;
+
     public FloatMatrix m_eye;
+    public float near = Settings.cameraNear;
+    public float far = Settings.cameraFar;
+
     public FloatMatrix materialColor;
     public FloatMatrix ambientColor;
     public FloatMatrix lightPosition;

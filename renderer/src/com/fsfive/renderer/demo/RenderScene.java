@@ -19,20 +19,19 @@ import java.util.logging.Logger;
  * Created by Michael on 6/3/2014.
  */
 public class RenderScene implements Scene, WindowListener {
-    private static final Logger LOGGER = Logger.getLogger(RenderScene.class.getName());
+//    private static final Logger LOGGER = Logger.getLogger(RenderScene.class.getName());
 
     private boolean m_finished;
     private Display m_masterDisplay;
     private Pipeline m_pipeline;
     private RenderObject m_renderObject;
-//    private Properties m_renderSettings;
 
     public RenderScene() {
         m_finished = false;
 
         // setup the window and display context
         m_masterDisplay = new Display(800, 800);
-        m_masterDisplay.initialize(null, "Michael Landes");
+        m_masterDisplay.initialize(null, "Michael Landes : GPU Programming : CPU Pipeline");
         m_masterDisplay.setCloseListener(this);
 
         // setup the rendering pipeline and the projection matrix
@@ -67,14 +66,10 @@ public class RenderScene implements Scene, WindowListener {
 
     @Override
     public void update(double deltaTime) {
-        LOGGER.log(Level.INFO, "" + 1.0 / deltaTime + " FPS");
+//        LOGGER.log(Level.INFO, "" + 1.0 / deltaTime + " FPS");
 
         // update world objects
         m_renderObject.update(deltaTime);
-
-//        Properties settings = ResourceLoader.getProperties("/renderer.properties");
-//        if (settings != null)
-//            m_renderSettings = settings;
     }
 
     @Override

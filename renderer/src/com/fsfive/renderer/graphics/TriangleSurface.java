@@ -1,6 +1,5 @@
 package com.fsfive.renderer.graphics;
 
-import com.fsfive.renderer.demo.Settings;
 import org.jblas.FloatMatrix;
 import org.jblas.Geometry;
 
@@ -59,24 +58,6 @@ public class TriangleSurface {
         if (-Geometry.normalize(E).dot(normal) > 0)
             return;
 
-        // test world coordinates...
-//        m_px[0] = (int)(w0.get(0) * -100);
-//        m_px[1] = (int)(w1.get(0) * -100);
-//        m_px[2] = (int)(w2.get(0) * -100);
-//        m_py[0] = (int)(w0.get(1) * -100);
-//        m_py[1] = (int)(w1.get(1) * -100);
-//        m_py[2] = (int)(w2.get(1) * -100);
-//        int cx = (int)(centroid.get(0) * -100);
-//        int cy = (int)(centroid.get(1) * -100);
-//        int nx = (int) (cx + normal.get(0) * -20);
-//        int ny = (int) (cy + normal.get(1) * -20);
-//        graphics.setColor(Color.RED);
-//        graphics.drawPolygon(m_px, m_py, 3);
-//        graphics.setColor(Color.GREEN);
-//        graphics.fillOval(cx, cy, 3, 3);
-//        graphics.setColor(Color.WHITE);
-//        graphics.drawLine(cx, cy, nx, ny);
-
         // transform the vertices according to pipeline
         FloatMatrix v0 = m_vertices[0].mmul(pipeline.current());
         FloatMatrix v1 = m_vertices[1].mmul(pipeline.current());
@@ -91,17 +72,23 @@ public class TriangleSurface {
         m_py[2] = (int)(v2.get(1) / v2.get(3));
 
         // compute surface color (shade)
-        FloatMatrix L = Geometry.normalize(pipeline.lightPosition.sub(centroid));
-        FloatMatrix Cem = pipeline.materialColor.mul(0.25f); // = ke
-        FloatMatrix Camb = pipeline.ambientColor.mul(0.25f); // = ka * ambient
-        FloatMatrix Cdiff = pipeline.lightColor.mul(1f).mul(Math.max(L.dot(normal), 0)); // = kd * color * max(L.N, 0)
-        float specular = 5;
-//        E = Geometry.normalize(pipeline.lightPosition.sub(pipeline.m_eye)); // centroid - eye?
+        // emissive = ke
+        FloatMatrix Cem = pipeline.materialColor;
+
+        // ambient = ka * ambient
+        FloatMatrix Camb = pipeline.ambientColor;
+
+        // diffuse = kd * color * max(L.N, 0)
+        FloatMatrix L = pipeline.lightPosition.sub(centroid);
+        FloatMatrix Cdiff = pipeline.lightColor.mul(Math.max(Geometry.normalize(L).dot(normal), 0));
+
+        // specular = ks * color * [N.L > 0 ? 1 : 0] * max(H.N, 0)^S
+        float specular = 20;
         FloatMatrix H = Geometry.normalize(E.add(L));
-        FloatMatrix Cspec = pipeline.lightColor.mul(0.25f).mul((float) Math.pow(Math.max(H.dot(normal), 0), specular));
-        // = ks * color * [N.L > 0 ? 1 : 0] * max(H.N, 0)^S
-//        FloatMatrix C = Cspec.add(Cdiff).add(Camb).add(Cem);
-        FloatMatrix C = Cdiff;
+        FloatMatrix Cspec = pipeline.lightColor.mul((float) Math.pow(Math.max(H.dot(normal), 0), specular));
+
+        // final shade composition
+        FloatMatrix C = Cspec.add(Cdiff).add(Cem.mul(.5f)).add(Camb.mul(.5f));
         if (C.get(0) > 1f) C.put(0, 1f);
         if (C.get(1) > 1f) C.put(1, 1f);
         if (C.get(2) > 1f) C.put(2, 1f);
@@ -110,6 +97,12 @@ public class TriangleSurface {
 
         // compute a distance value to use for sorting painter list
         float distance = pipeline.m_eye.squaredDistance(centroid);
+
+        // clip near and far planes
+        float near = pipeline.near * pipeline.near;
+        float far = pipeline.far * pipeline.far;
+        if (distance < near || distance > far)
+            return;
 
         pipeline.painterList.put(distance, this);
     }

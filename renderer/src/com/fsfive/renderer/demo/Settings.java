@@ -6,7 +6,7 @@ package com.fsfive.renderer.demo;
 public class Settings {
     // TODO continuous properties update to this file
     // USING LEFT-HANDED SYSTEM
-    public static final int FRAMERATE = 24;
+    public static final int FRAMERATE = 30;
 
     // OBJECT LOCATION / ORIENTATION
     // objectPosition : vec3f world coordinates
@@ -25,8 +25,8 @@ public class Settings {
     // cameraNear : float
     // cameraFar : float
     public static float cameraFOV = (float) (90 * Math.PI / 180);
-    public static float cameraNear = 5f;
-    public static float cameraFar = 20f;
+    public static float cameraNear = 7f;
+    public static float cameraFar = 12f;
 
     // SIMPLE LIGHTING
     // lightEmissive : vec3i color (this is the material color)
@@ -38,5 +38,13 @@ public class Settings {
     // lightPosition : vec3f world coordinates
     // lightColor : vec3i color
     public static float[] lightPosition = { 5f, 5f, 5f };
-    public static int[] lightColor = {150, 0, 255};
+    public static int[] lightColor = {50, 0, 155};
+
+    // OBJECT MOVEMENT
+    public static float dx = .0f;
+    public static float dy = .0f;
+    public static float dz = .0f;
+    public static float rotx = 5f; // specified in degrees per second
+    public static float roty = 60f;
+    public static float rotz = 5f;
 }

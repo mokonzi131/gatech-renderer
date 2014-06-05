@@ -13,13 +13,13 @@ public class RenderObject {
     private Mesh m_mesh;
     private FloatMatrix m_position;
     private FloatMatrix m_size;
-    private int[] m_rotation;
+    private float[] m_rotation;
 
     public RenderObject() {
         m_mesh = null;
         m_position = FloatMatrix.zeros(3);
         m_size = FloatMatrix.ones(3);
-        m_rotation = new int[] {0, 0, 0};
+        m_rotation = new float[] {0f, 0f, 0f};
     }
 
     void attachMesh(Mesh mesh) {
@@ -35,15 +35,16 @@ public class RenderObject {
     }
 
     void setRotation(int dx, int dy, int dz) {
-        m_rotation = new int[] {dx, dy, dz};
+        m_rotation = new float[] {(float) (dx * Math.PI / 180), (float) (dy * Math.PI / 180), (float) (dz * Math.PI / 180)};
     }
 
     void update(double deltaTime) {
-//        m_position.put(0, m_position.get(0) + 1f);
-//        m_size.put(1, m_size.get(1) + 10f);
-//        m_rotation[0] += 3;
-        m_rotation[1] += 1;
-//        m_rotation[2] += 1;
+        m_position.put(0, m_position.get(0) + Settings.dx);
+        m_position.put(1, m_position.get(1) + Settings.dy);
+        m_position.put(2, m_position.get(2) + Settings.dz);
+        m_rotation[0] += deltaTime * Settings.rotx * Math.PI / 180;
+        m_rotation[1] += deltaTime * Settings.roty * Math.PI / 180;
+        m_rotation[2] += deltaTime * Settings.rotz * Math.PI / 180;
     }
 
     void render(Graphics2D graphics, Pipeline pipeline) {

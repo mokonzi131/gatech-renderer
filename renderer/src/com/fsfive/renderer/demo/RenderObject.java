@@ -41,7 +41,7 @@ public class RenderObject {
     void update(double deltaTime) {
 //        m_position.put(0, m_position.get(0) + 1f);
 //        m_size.put(1, m_size.get(1) + 10f);
-//        m_rotation[0] += 1;
+//        m_rotation[0] += 3;
         m_rotation[1] += 1;
 //        m_rotation[2] += 1;
     }
@@ -49,9 +49,9 @@ public class RenderObject {
     void render(Graphics2D graphics, Pipeline pipeline) {
         pipeline.push();
 
-        pipeline.translate(m_position.get(0), m_position.get(1), m_position.get(2));
-        pipeline.rotate(m_rotation[0], m_rotation[1], m_rotation[2]);
-        pipeline.scale(m_size.get(0), m_size.get(1), m_size.get(2));
+        pipeline.translate(m_position.get(0), m_position.get(1), m_position.get(2), true);
+        pipeline.rotate(m_rotation[0], m_rotation[1], m_rotation[2], true);
+        pipeline.scale(m_size.get(0), m_size.get(1), m_size.get(2), true);
         m_mesh.render(graphics, pipeline);
 
         pipeline.pop();

@@ -37,10 +37,13 @@ public class RenderScene implements Scene, WindowListener {
 
         // setup the rendering pipeline and the projection matrix
         m_pipeline = new Pipeline();
-        // viewport transform origin to screen center, flip axes
-        m_pipeline.translate(800 / 2f, 800 / 2f, 0f);
-        m_pipeline.scale(1f, -1f, 1f);
-//        m_pipeline.setProjectionLHS(Settings.cameraFOV, 1f, Settings.cameraNear, Settings.cameraFar);
+
+        // viewport scale matrix
+        m_pipeline.setViewport(800f, 800f, 0f, 0f, 0f, 1f);
+
+        // perspective transformation
+        m_pipeline.setProjectionLHS(Settings.cameraFOV, 1f, Settings.cameraNear, Settings.cameraFar);
+
         // TODO
 //        m_renderSettings = ResourceLoader.getProperties("/renderer.properties");
 
@@ -59,7 +62,7 @@ public class RenderScene implements Scene, WindowListener {
                 Settings.objectOrientation[1],
                 Settings.objectOrientation[2]
         );
-        m_renderObject.setSize(5f, 5f, 5f);
+        m_renderObject.setSize(1f, 1f, 1f);
     }
 
     @Override
@@ -80,9 +83,10 @@ public class RenderScene implements Scene, WindowListener {
         BufferedImage image = m_masterDisplay.getContext();
         Graphics2D graphics = image.createGraphics();
         graphics.setColor(new Color(
-                Settings.lightAmbient[0],
-                Settings.lightAmbient[1],
-                Settings.lightAmbient[2]));
+                m_pipeline.ambientColor.get(0),
+                m_pipeline.ambientColor.get(1),
+                m_pipeline.ambientColor.get(2),
+                1f));
         graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
 
         m_pipeline.push();
@@ -91,18 +95,21 @@ public class RenderScene implements Scene, WindowListener {
         FloatMatrix at = new FloatMatrix(new float[][] {
                 {Settings.cameraLookAt[0], Settings.cameraLookAt[1], Settings.cameraLookAt[2]}
         });
-        FloatMatrix eye = new FloatMatrix(new float[][] {
+        m_pipeline.m_eye = new FloatMatrix(new float[][] {
                 {Settings.cameraEye[0], Settings.cameraEye[1], Settings.cameraEye[2]}
         });
         FloatMatrix up = new FloatMatrix(new float[][] {
                 {0f, 1f, 0f}
         });
-        m_pipeline.setView(at, eye, up);
+        m_pipeline.setView(at, m_pipeline.m_eye, up);
 
         // render the scene object(s)
         m_renderObject.render(graphics, m_pipeline);
 
         m_pipeline.pop();
+
+        m_pipeline.drawPainterList(graphics);
+        m_pipeline.painterList.clear();
     }
 
     @Override

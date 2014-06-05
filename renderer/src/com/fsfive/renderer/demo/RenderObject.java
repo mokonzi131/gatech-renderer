@@ -39,11 +39,11 @@ public class RenderObject {
     }
 
     void update(double deltaTime) {
-//        m_worldLocation.put(0, m_worldLocation.get(0) + 10f);
-//        m_worldSize.put(1, m_worldSize.get(1) + 10f);
-//        m_rotation[0] += 10;
-//        m_rotation[1] += 10;
-//        m_rotation[2] += 10;
+//        m_position.put(0, m_position.get(0) + 1f);
+//        m_size.put(1, m_size.get(1) + 10f);
+//        m_rotation[0] += 1;
+        m_rotation[1] += 1;
+//        m_rotation[2] += 1;
     }
 
     void render(Graphics2D graphics, Pipeline pipeline) {

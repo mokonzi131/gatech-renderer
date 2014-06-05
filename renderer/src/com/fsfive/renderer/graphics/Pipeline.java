@@ -1,6 +1,7 @@
 package com.fsfive.renderer.graphics;
 
 import org.jblas.FloatMatrix;
+import org.jblas.Geometry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,5 +99,67 @@ public class Pipeline {
                 {0f, 0f, 0f, 1f}
         });
         applyMatrix(Rz);
+    }
+
+    private FloatMatrix crossLHS(FloatMatrix U, FloatMatrix V) {
+        // assuming 3x3 matrices coming in...
+        //    c0 = u1v2 - u2v1
+        //    c1 = u2v0 - u0v2
+        //    c2 = u0v1 - u1v0
+        float c0 = U.get(1) * V.get(2) - U.get(2) * V.get(1);
+        float c1 = U.get(2) * V.get(0) - U.get(0) * V.get(2);
+        float c2 = U.get(0) * V.get(1) - U.get(1) * V.get(0);
+        FloatMatrix C = new FloatMatrix(new float[][] {
+                // negate because we are LHS
+                {-c0, -c1, -c2}
+        });
+
+        return C;
+    }
+
+    public void setView(FloatMatrix at, FloatMatrix eye, FloatMatrix up) {
+        // create the axes
+        //        zaxis = normal(At - Eye)
+        //        xaxis = normal(crossLHS(Up, zaxis))
+        //        yaxis = crossLHS(zaxis, xaxis)
+        FloatMatrix Z = Geometry.normalize(eye.sub(at));
+        FloatMatrix X = Geometry.normalize(crossLHS(up, Z));
+        FloatMatrix Y = crossLHS(Z, X);
+
+        // build the matrix
+        //        xaxis.x           yaxis.x           zaxis.x          0
+        //        xaxis.y           yaxis.y           zaxis.y          0
+        //        xaxis.z           yaxis.z           zaxis.z          0
+        //       -dot(xaxis, eye)  -dot(yaxis, eye)  -dot(zaxis, eye)  1
+        FloatMatrix view = new FloatMatrix(new float[][] {
+                {X.get(0), Y.get(0), Z.get(0), 0f},
+                {X.get(1), Y.get(1), Z.get(1), 0f},
+                {X.get(2), Y.get(2), Z.get(2), 0f},
+                {-X.dot(eye), -Y.dot(eye), -Z.dot(eye), 1f}
+        });
+
+        applyMatrix(view);
+    }
+
+    public void setProjectionLHS(float fovy, float aspect, float near, float far) {
+        // find scaling factors
+        // yScale = cot(fovy/2)
+        // xScale = yScale / aspect
+        float yScale = (float) (1f / Math.tan(fovy / 2f));
+        float xScale = yScale / aspect;
+
+        // build matrix
+        //        xScale     0          0               0
+        //        0        yScale       0               0
+        //        0          0       far / (far - near)         1
+        //        0          0       -near * far / (far - near)     0
+        FloatMatrix projection = new FloatMatrix(new float[][] {
+                {xScale, 0f, 0f, 0f},
+                {0f, yScale, 0f, 0f},
+                {0f, 0f, far / (far - near), 1f},
+                {0f, 0f, -near * far / (far - near), 0f}
+        });
+
+        applyMatrix(projection);
     }
 }

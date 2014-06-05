@@ -9,22 +9,22 @@ public class Settings {
     // OBJECT LOCATION / ORIENTATION
     // objectPosition : vec3f world coordinates
     // objectOrientation : vec3i degrees
-    public static float[] objectPosition = { 300f, 200f, 0f };
-    public static int[] objectOrientation = {90, 180, 270 };
+    public static float[] objectPosition = {0f, -10f, 10f};
+    public static int[] objectOrientation = {180, 0, 0};
 
     // CAMERA LOCATION / ORIENTATION
     // cameraPosition : vec3f world coordinates
     // cameraLook : vec3f world coordinates
-    public static float[] cameraPosition = { 10f, 20f, 30f };
-    public static float[] cameraLook = { 2f, 2f, 2f };
+    public static float[] cameraEye = { 0f, 0f, -10f };
+    public static float[] cameraLookAt = { 0f, -10f, 10f };
 
     // FIELD OF VIEW
-    // cameraFOV : ???
-    // cameraNear : ???
-    // cameraFar : ???
-    public static float cameraFOV = -1f;
-    public static float cameraNear = -1f;
-    public static float cameraFar = -1f;
+    // cameraFOV : float
+    // cameraNear : float
+    // cameraFar : float
+    public static float cameraFOV = (float) (90 * Math.PI / 180);
+    public static float cameraNear = cameraEye[2] + 5f;
+    public static float cameraFar = cameraEye[2] + 20f;
 
     // AMBIENT LIGHT
     // lightAmbient : vec3i color

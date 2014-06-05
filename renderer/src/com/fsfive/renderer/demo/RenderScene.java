@@ -19,8 +19,6 @@ import java.util.logging.Logger;
  * Created by Michael on 6/3/2014.
  */
 public class RenderScene implements Scene, WindowListener {
-//    private static final Logger LOGGER = Logger.getLogger(RenderScene.class.getName());
-
     private boolean m_finished;
     private Display m_masterDisplay;
     private Pipeline m_pipeline;
@@ -41,14 +39,10 @@ public class RenderScene implements Scene, WindowListener {
         m_pipeline.setViewport(800f, 800f, 0f, 0f, 0f, 1f);
 
         // perspective transformation
-        m_pipeline.setProjectionLHS(Settings.cameraFOV, 1f, Settings.cameraNear, Settings.cameraFar);
-
-        // TODO
-//        m_renderSettings = ResourceLoader.getProperties("/renderer.properties");
+        m_pipeline.setProjectionLHS((float) (Settings.cameraFOV * Math.PI / 180), 1f, Settings.cameraNear, Settings.cameraFar);
 
         // create the object we are rendering
-        List<float[]> meshData = RawObjectLoader.loadRawFile("/shuttle_breneman_whitfield.raw");
-//        List<float[]> meshData = RawObjectLoader.loadRawFile("/cessna_ben_perry.raw");
+        List<float[]> meshData = RawObjectLoader.loadRawFile(Settings.filename);
         Mesh mesh = Mesh.createRenderObjectFromVerticesList(meshData);
         m_renderObject = new RenderObject();
         m_renderObject.attachMesh(mesh);
@@ -66,8 +60,6 @@ public class RenderScene implements Scene, WindowListener {
 
     @Override
     public void update(double deltaTime) {
-//        LOGGER.log(Level.INFO, "" + 1.0 / deltaTime + " FPS");
-
         // update world objects
         m_renderObject.update(deltaTime);
     }

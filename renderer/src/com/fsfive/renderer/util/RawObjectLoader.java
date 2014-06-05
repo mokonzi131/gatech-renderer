@@ -17,7 +17,7 @@ public class RawObjectLoader {
     private static Logger LOGGER = Logger.getLogger(RawObjectLoader.class.getName());
 
     public static List<float[]> loadRawFile(String filename) {
-        LOGGER.log(Level.INFO, "Loading File " + filename);
+//        LOGGER.log(Level.INFO, "Loading File " + filename);
 
         // retrieve the lines from the file
         List<String> lines = readLines(filename);
@@ -49,7 +49,7 @@ public class RawObjectLoader {
      * @return A list of lines, or null if the filename is invalid
      */
     public static List<String> readLines(String filename) {
-        LOGGER.log(Level.INFO, "Reading File " + filename);
+//        LOGGER.log(Level.INFO, "Reading File " + filename);
 
         List<String> lines = new ArrayList<>();
 

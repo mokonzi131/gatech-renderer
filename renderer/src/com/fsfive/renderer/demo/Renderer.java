@@ -15,7 +15,7 @@ public class Renderer extends Game {
 
     public Renderer() {
         m_engine = new Engine();
-        m_engine.setFramerate(Settings.FRAMERATE);
+        m_engine.setFramerate(Settings.framerate);
     }
 
     @Override
